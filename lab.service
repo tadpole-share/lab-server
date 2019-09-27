@@ -1,0 +1,13 @@
+[Unit]
+Description=Tadpole jupyter lab service
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=tadpole
+ExecStart=/usr/bin/env bash /root/lab-server/start.sh
+
+[Install]
+WantedBy=multi-user.target
