@@ -258,7 +258,7 @@ c.NotebookApp.allow_remote_access = True
 #c.NotebookApp.nbserver_extensions = {}
 
 ## The directory to use for notebooks and kernels.
-#c.NotebookApp.notebook_dir = ''
+c.NotebookApp.notebook_dir = '/home/tadpole/jupyter'
 
 ## Whether to open in a browser after starting. The specific browser used is
 #  platform dependent and determined by the python standard library `webbrowser`
@@ -320,7 +320,7 @@ c.NotebookApp.password = '${HASHED_PASSWORD}'
 #c.NotebookApp.ssl_options = {}
 
 ## Supply overrides for terminado. Currently only supports "shell_command".
-#c.NotebookApp.terminado_settings = {}
+c.NotebookApp.terminado_settings = { 'shell_command': ['bash'] }
 
 ## Set to False to disable terminals.
 #  

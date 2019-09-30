@@ -7,7 +7,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=tadpole
-ExecStart=/usr/bin/env bash /root/lab-server/start.sh
+ExecStart=/usr/bin/start-lab.sh
 
 [Install]
 WantedBy=multi-user.target

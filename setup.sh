@@ -1,42 +1,17 @@
 #!/bin/bash
-
 apt-get update
 apt-get install -y git wget
 
-PASSWORD=$1
+adduser tadpole --disabled-password --disabled-login --gecos ""
+deluser tadpole wheel # wheel group is default and has sudo rights on Research CLoud machine
+su tadpole -c "bash setup_jupyter.sh $1"
+PYTHON_COMMAND="from notebook.auth import passwd; print(passwd(\"$1\"))"
+export HASHED_PASSWORD=`su tadpole -c "~/miniconda3/envs/tadpole/bin/python3 -c '${PYTHON_COMMAND}'"`
+mkdir /home/tadpole/.jupyter
+envsubst < jupyter_notebook_config.py > /home/tadpole/.jupyter/jupyter_notebook_config.py
+chown -R tadpole:tadpole /home/tadpole/.jupyter
 
-install_miniconda () {
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    sh ./Miniconda3-latest-Linux-x86_64.sh -b
-    echo ". ~/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc
-    . ~/miniconda3/etc/profile.d/conda.sh
-}
-
-setup_python_environment () {
-    adduser tadpole --disabled-password --gecos ""
-    su tadpole
-    cd
-    install_miniconda
-    conda create -n jupyterlab python=3
-    conda install -n jupyterlab -y jupyterlab ipywidgets widgetsnbextension
-    HASHED_PASSWORD=`python3 -c "from notebook.auth import passwd; print(passwd('$1'))"`
-    mkdir ~/.jupyter
-    envsubst < jupyter_notebook_config.py > ~/.jupyter/jupyter_notebook_config.py
-
-    git clone https://github.com/tadpole-share/jupyter.git
-    conda env update --file jupyter/environment.yml
-    pip3 install -e jupyter
-
-    # installs libraries in jupyter/lib
-    for D in ~/jupyter/lib; do
-        if [ -d "${D}" ]; then
-            cd "~/jupyter/lib/$D"
-            pip3 install -e .
-        fi
-    done
-}
-
-install_miniconda
-setup_python_environment
-
-cp lab.service /etc/systemd/user/
+cp start.sh /usr/bin/start-lab.sh
+chmod 755 /usr/bin/start-lab.sh
+cp lab.service /etc/systemd/system/
+chmod 644 /etc/systemd/system/lab.service
