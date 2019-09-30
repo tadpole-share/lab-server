@@ -15,3 +15,5 @@ cp start.sh /usr/bin/start-lab.sh
 chmod 755 /usr/bin/start-lab.sh
 cp lab.service /etc/systemd/system/
 chmod 644 /etc/systemd/system/lab.service
+systemctl enable lab
+systemctl start lab
