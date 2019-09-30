@@ -13,7 +13,7 @@ conda create -n tadpole python=3 -y
 conda activate tadpole
 
 # Jupyterlab stuff
-conda install -c conda-forge -n tadpole -y jupyterlab ipywidgets widgetsnbextension nodejs psutil
+conda install -c conda-forge -n tadpole -y jupyterlab ipywidgets widgetsnbextension nodejs
 jupyter labextension install @jupyter-widgets/jupyterlab-manager
 pip install psutil
 
@@ -35,4 +35,4 @@ cd /home/tadpole/jupyter
 pip install -e .
 
 # R stuff
-conda install -c r r
+conda install -y -n tadpole -c r r
