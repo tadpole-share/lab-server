@@ -11,12 +11,18 @@ install_miniconda
 conda create -n tadpole python=3 -y # fails first time
 conda create -n tadpole python=3 -y
 conda activate tadpole
-conda install -n tadpole -y jupyterlab ipywidgets widgetsnbextension
+
+# Jupyterlab stuff
+conda install -c conda-forge -n tadpole -y jupyterlab ipywidgets widgetsnbextension nodejs psutil
+jupyter labextension install @jupyter-widgets/jupyterlab-manager
+pip install psutil
+
+# Tadpole stuff
 git clone https://github.com/tadpole-share/jupyter.git
 conda env update --file jupyter/environment.yml
 pip install -e jupyter
 
-# installs libraries in jupyter/lib
+## installs libraries in jupyter/lib
 cd /home/tadpole/jupyter/lib
 for D in */; do
     if [ -d "${D}" ]; then
@@ -27,3 +33,6 @@ done
 
 cd /home/tadpole/jupyter
 pip install -e .
+
+# R stuff
+conda install -c r r
